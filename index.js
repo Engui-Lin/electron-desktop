@@ -1,8 +1,15 @@
+require("dotenv").config();
+
+const OpenAI = require("openai");
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
 const { app, BrowserWindow, ipcMain, desktopCapturer } = require("electron");
 const fs = require("fs");
 const path = require("path");
+const { type } = require("os");
 
 let mainWindow;
+let filePath;
 
 app.whenReady().then(() => {
   mainWindow = new BrowserWindow({
@@ -60,8 +67,11 @@ ipcMain.on("save-screenshot", async (event) => {
 
     const screenshotPath = path.join(
       screenshotsFolder,
-      `screenshot-${Date.now()}.png`
+      "screenshot.png"
+      // `screenshot-${Date.now()}.png`
     );
+
+    filePath = screenshotPath;
 
     fs.writeFile(screenshotPath, imageBuffer, (err) => {
       if (err) {
@@ -73,5 +83,57 @@ ipcMain.on("save-screenshot", async (event) => {
     });
   } catch (error) {
     console.error("Error capturing screen:", error);
+  }
+});
+
+// Send API key securely to the renderer process
+ipcMain.handle("get-api-key", () => {
+  return process.env.OPENAI_API_KEY;
+});
+
+// Send screenshot file path to the renderer process
+ipcMain.handle("get-file-path", () => {
+  return filePath;
+});
+
+ipcMain.handle("convert-image-to-base64", async (_, filePath) => {
+  try {
+    const imageBuffer = fs.readFileSync(filePath);
+    return imageBuffer.toString("base64");
+  } catch (error) {
+    console.error("Error reading image file:", error);
+    return null;
+  }
+});
+
+// Handle image summary request
+ipcMain.handle("summarize-image", async (event, filePath) => {
+  try {
+    const imageBuffer = fs.readFileSync(filePath);
+    base64Image = imageBuffer.toString("base64");
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        {
+          role: "user",
+          content: [
+            { type: "text", text: "What's in this image?" },
+            {
+              type: "image_url",
+              image_url: {
+                url: `data:image/jpeg;base64,${base64Image}`,
+              },
+            },
+          ],
+        },
+      ],
+      store: true,
+    });
+
+    console.log(response.choices[0]);
+    return response.choices[0];
+  } catch (error) {
+    console.error("Error summarizing image:", error);
+    return error;
   }
 });
