@@ -155,7 +155,7 @@ ipcMain.handle("generate-labs-prompt", async (event, textSummary) => {
     const context = `This is a summary of what the user is doing on their computer ${textSummary}`;
     const condition = "Is the user doing something productive?";
     const demand =
-      "If yes, you will be upset. Otherwise you'll be happy, supportive, and encouraging. What will you say to them? Your response should be maximum 2 sentences.";
+      "If not, you will be upset. Otherwise you'll be happy, supportive, and encouraging. What will you say to them? Your response should be maximum 2 sentences.";
     const fullPrompt = `${prefix}. ${context}. ${condition}. ${demand}`;
     console.log("fullPrompt: ", fullPrompt);
 
