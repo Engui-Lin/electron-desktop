@@ -33,3 +33,29 @@ window.electronAPI.onScreenshotSaved((filePath) => {
   console.log("Screenshot saved at:", filePath);
   // alert(`Screenshot saved at:\n${filePath}`);
 });
+
+document
+  .getElementById("generatePrompt")
+  .addEventListener("click", async () => {
+    console.log("generatePrompt button clicked!");
+    textSummary = await window.electronAPI.getTextSummary();
+
+    console.log("Sending command to OpenAI...");
+    const response = await window.electronAPI.generatePromptWithOpenAI(
+      textSummary
+    );
+
+    console.log("Generated TTS Prompt:", response);
+    alert(`Generated TTS Prompt:\n${response}`);
+  });
+
+document.getElementById("generateTTS").addEventListener("click", async () => {
+  console.log("generateTTS button clicked!");
+  ttsText = await window.electronAPI.getTTSText();
+
+  console.log("Sending command to ElevenLabs...");
+  await window.electronAPI.generateTTS(ttsText);
+
+  // console.log("Generated TTS Prompt:", response);
+  // alert(`Generated TTS Prompt:\n${response}`);
+});
