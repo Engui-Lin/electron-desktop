@@ -1,5 +1,4 @@
-// import { ElevenLabsClient, play } from "elevenlabs";
-const { ElevenLabsClient, play } = require("elevenlabs");
+import { ElevenLabsClient, play } from "elevenlabs";
 
 const client = new ElevenLabsClient({
   apiKey: process.env.ELEVEN_LABS_API_KEY,

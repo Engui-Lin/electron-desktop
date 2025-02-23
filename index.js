@@ -6,7 +6,7 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const { app, BrowserWindow, ipcMain, desktopCapturer } = require("electron");
 const fs = require("fs");
 const path = require("path");
-const { ElevenLabsClient, play } = require("elevenlabs");
+const { ElevenLabsClient, play, save } = require("elevenlabs");
 const { pipeline } = require("stream");
 const { promisify } = require("util");
 const streamPipeline = promisify(pipeline);
@@ -18,8 +18,9 @@ const elevenlabs = new ElevenLabsClient({
 let mainWindow;
 let filePath;
 let textSummary;
-let ttsText = "test";
-// "Ugh, look at you trying so hard to be productive. Developing and debugging an Electron app? How riveting. I can't even come up with a colorful insult for this oneΓÇöyou're actually working and making progress. It's just sickening. Can't you do something less productive for once?";
+// let ttsText;
+// let ttsText = "test";
+let ttsText = "Ugh, look at you trying so hard to be productive. What a loser.";
 
 app.whenReady().then(() => {
   mainWindow = new BrowserWindow({
@@ -154,7 +155,7 @@ ipcMain.handle("generate-labs-prompt", async (event, textSummary) => {
     const context = `This is a summary of what the user is doing on their computer ${textSummary}`;
     const condition = "Is the user doing something productive?";
     const demand =
-      "If yes, you will be upset. Otherwise you'll be happy, supportive, and encouraging. What will you say to them? Keep your response short and to the point.";
+      "If yes, you will be upset. Otherwise you'll be happy, supportive, and encouraging. What will you say to them? Your response should be maximum 2 sentences.";
     const fullPrompt = `${prefix}. ${context}. ${condition}. ${demand}`;
     console.log("fullPrompt: ", fullPrompt);
 
@@ -178,53 +179,6 @@ ipcMain.handle("generate-labs-prompt", async (event, textSummary) => {
   }
 });
 
-// ipcMain.handle("generate-tts", async (event, text) => {
-//   try {
-//     const response = await elevenlabs.textToSpeech.convert(
-//       "JBFqnCBsd6RMkjVDRZzb",
-//       {
-//         output_format: "mp3_44100_128",
-//         text: text,
-//         model_id: "eleven_multilingual_v2",
-//       }
-//     );
-
-//     console.log(response);
-
-//     // Ensure the response contains a buffer
-//     if (!response || !response.readableStream) {
-//       throw new Error("No readable stream received");
-//     }
-
-//     const downloadsFolder = path.join(
-//       app.getPath("downloads"),
-//       "electron-screenshots"
-//     );
-
-//     const mp3Path = path.join(downloadsFolder, "output.mp3");
-//     // Read the stream correctly without locking it
-//     const fileStream = fs.createWriteStream(mp3Path);
-//     const reader = response.readableStream.getReader();
-
-//     async function writeStream() {
-//       while (true) {
-//         const { done, value } = await reader.read();
-//         if (done) break;
-//         fileStream.write(value);
-//       }
-//       fileStream.end();
-//     }
-
-//     await writeStream();
-
-//     console.log(`MP3 file saved to: ${mp3Path}`);
-//     return response;
-//   } catch (error) {
-//     console.error("Error generating TTS:", error);
-//     return error;
-//   }
-// });
-
 ipcMain.handle("generate-tts", async (event, text) => {
   try {
     const downloadsFolder = path.join(
@@ -239,40 +193,38 @@ ipcMain.handle("generate-tts", async (event, text) => {
 
     const mp3Path = path.join(downloadsFolder, "output.mp3");
 
+    if (fs.existsSync(mp3Path)) {
+      fs.unlinkSync(mp3Path);
+      console.log(`File deleted: ${mp3Path}`);
+    }
+
     const audio = await elevenlabs.textToSpeech.convert(
-      "JBFqnCBsd6RMkjVDRZzb",
+      "FGY2WhTYpPnrIDTdsKH5",
       {
         output_format: "mp3_44100_128",
         text: text,
         model_id: "eleven_multilingual_v2",
       }
     );
-    await play(audio);
-    // await streamPipeline(response, fs.createWriteStream(mp3Path));
-    // console.log(response);
-    // Convert the ReadableStream to an ArrayBuffer
-    // const arrayBuffer = await response.readableStream.arrayBuffer();
+    // await play(audio);
 
-    // Convert ArrayBuffer to Buffer
-    // const buffer = Buffer.from(arrayBuffer);
+    // Create a writable stream to save the audio
+    const writeStream = fs.createWriteStream(mp3Path);
 
-    // Write the buffer to a file
-    // await fs.writeFile(mp3Path, buffer);
+    // Pipe the audio stream to the file
+    audio.pipe(writeStream);
 
-    // Get the Downloads folder path
+    return new Promise((resolve, reject) => {
+      writeStream.on("finish", () => {
+        console.log(`TTS audio saved to: ${mp3Path}`);
+        resolve({ success: true, path: mp3Path });
+      });
 
-    // Get the readable stream
-    // const readableStream = response.readableStream;
-
-    // Save the stream to the specified file path
-    // await streamPipeline(readableStream, fs.createWriteStream(mp3Path));
-
-    console.log(`MP3 file saved to: ${mp3Path}`);
-
-    // Use pipeline() to correctly stream the audio to file
-
-    console.log(`MP3 file saved to: ${mp3Path}`);
-    return { success: true, filePath: mp3Path };
+      writeStream.on("error", (error) => {
+        console.error("Error saving TTS file:", error);
+        reject({ success: false, error: error.message });
+      });
+    });
   } catch (error) {
     console.error("Error generating TTS:", error);
     return { success: false, error: error.message };
