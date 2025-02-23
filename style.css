@@ -53,8 +53,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    border-bottom: 2px solid var(--color-secondary);
+    padding: var(--boxPadding);
+    border: 2px solid var(--color-secondary);
 }
 
 .tabs {
@@ -120,12 +120,15 @@ button:active {
 
 .time-box {
     padding: var(--boxPadding);
-    background: var(--color-secondary);
+    background: var(--color-primary);
     text-align: center;
-    border: none;
-    color: var(--color-primary);
+    border: solid var(--color-secondary) 2px;
+    color: var(--color-secondary);
     font-weight: bold;
 }
+
+input[type="time"]::-webkit-calendar-picker-indicator{
+    filter: brightness(0) saturate(100%) invert(78%) sepia(64%) saturate(414%) hue-rotate(69deg) brightness(102%) contrast(103%);  }
 
 .days-selector {
     display: flex;

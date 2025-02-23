@@ -95,8 +95,8 @@ document.addEventListener("DOMContentLoaded", function () {
         day.style.color = "";
       } else {
         settings.schedule.selectedDays.push(dayValue);
-        day.style.background = "#ff6666";
-        day.style.color = "black";
+        day.style.background = "var(--color-secondary)";
+        day.style.color = "var(--color-primary)";
       }
       saveSettings();
     });
