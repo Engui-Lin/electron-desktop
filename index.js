@@ -75,6 +75,14 @@ app.whenReady().then(() => {
     }
   });
 
+  // Minimize to system tray instead of closing
+  hologramWindow.on("close", (event) => {
+    if (!app.isQuiting) {
+      event.preventDefault();
+      hologramWindow.hide(); // Hide instead of closing
+    }
+  });
+
   // Create Tray Icon
   tray = new Tray(path.join(__dirname, "icon.png")); // Use a 16x16 or 32x32 icon
   const contextMenu = Menu.buildFromTemplate([
@@ -94,12 +102,11 @@ app.whenReady().then(() => {
   // Restore the app when clicking the tray icon
   tray.on("click", () => {
     mainWindow.show();
+    hologramWindow.show();
   });
 
-  app.on("window-all-closed", () => {
-    if (process.platform !== "darwin") {
-      app.quit();
-    }
+  app.on("window-all-closed", (event) => {
+    event.preventDefault();
   });
 });
 
