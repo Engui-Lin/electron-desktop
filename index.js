@@ -10,6 +10,7 @@ const { type } = require("os");
 
 let mainWindow;
 let filePath;
+let textSummary;
 
 app.whenReady().then(() => {
   mainWindow = new BrowserWindow({
@@ -96,6 +97,10 @@ ipcMain.handle("get-file-path", () => {
   return filePath;
 });
 
+ipcMain.handle("get-text-summary", () => {
+  return textSummary;
+});
+
 // Handle image summary request
 ipcMain.handle("summarize-image", async (event, filePath) => {
   try {
@@ -121,9 +126,39 @@ ipcMain.handle("summarize-image", async (event, filePath) => {
     });
 
     console.log(response.choices[0]);
+    textSummary = response.choices[0].message.content;
     return response.choices[0].message.content;
   } catch (error) {
     console.error("Error summarizing image:", error);
+    return error;
+  }
+});
+
+ipcMain.handle("generate-labs-prompt", async (event, textSummary) => {
+  try {
+    const personalities = "Mean, sarcastic, and rude";
+    const prefix = `Pretend like you're someone that is ${personalities}`;
+    const context = `This is a summary of what the user is doing on their computer ${textSummary}`;
+    const demand =
+      "If the user is not doing anything productive on their screen, you will be upset, what will you say to them? Keep your response short and to the point.";
+    const fullPrompt = `${prefix}. ${context}. ${demand}`;
+    console.log("fullPrompt: ", fullPrompt);
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        {
+          role: "developer",
+          content: fullPrompt,
+        },
+      ],
+      store: true,
+    });
+
+    console.log(response.choices[0]);
+    return response.choices[0].message.content;
+  } catch (error) {
+    console.error("Error generating prompt:", error);
     return error;
   }
 });
