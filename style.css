@@ -1,5 +1,5 @@
 :root {
-    --color-primary: #1e1e1f;
+    --color-primary: black;
     --color-secondary: #ff6666;
 }
 
@@ -11,7 +11,7 @@
 
 body {
     background-color: black;
-    color: #ff6666;
+    color: var(--color-secondary);
     font-family: monospace;
     display: flex;
     justify-content: center;
@@ -97,7 +97,7 @@ button:active {
 .time-box {
     width: 80px;
     padding: 5px;
-    background: #ff6666;
+    background: var(--color-secondary);
     text-align: center;
     border: none;
     color: black;
@@ -117,7 +117,8 @@ select {
 
 .day-box {
     padding: 5px 10px;
-    background: #ff6666;
+    background: var(--color-primary);
+    border: solid var(--color-secondary) 2px;
     text-align: center;
     cursor: pointer;
     font-weight: bold;

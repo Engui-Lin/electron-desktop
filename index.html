@@ -58,15 +58,15 @@
                         <option value="10"></option>
                         <option value="11"></option>
                       </datalist>
-                      <input type="range" min="1" max="10" step="1" list="custom-list"></input>
+                      <input id="volume-slider" type="range" min="1" max="10" step="1" list="custom-list"></input>
                     </div>
                    </div>
                  </div>
-                 <select>
+                 <select id="voice-select">
                      <option>Sheyla</option>
                      <option>Alex</option>
                  </select>
-                 <input type="checkbox">
+                 <input id="enable-postprocessing" type="checkbox">
              </div>
          </div>
  
@@ -91,14 +91,32 @@
                      <div class="day-box">fri</div>
                      <div class="day-box">sat</div>
                      <div class="day-box">sun</div>
+                 </div><div class="container-slider">
+                  <div class="range-1">
+                    <datalist id="custom-list">
+                      <option value="1"></option>
+                      <option value="2"></option>
+                      <option value="3"></option>
+                      <option value="4"></option>
+                      <option value="5"></option>
+                      <option value="6"></option>
+                      <option value="7"></option>
+                      <option value="8"></option>
+                      <option value="9"></option>
+                      <option value="10"></option>
+                      <option value="11"></option>
+                    </datalist>
+                    <input id="interruption-slider"  type="range" min="1" max="10" step="1" list="custom-list"></input>
+                    
+                  </div>
                  </div>
              </div>
          </div>
  
          <div id="temperament" class="tab-content">
              <div class="settings-labels">
-                 <div>Mode</div>
-                 <div>Reactivity</div>
+                 <div>Profanity level</div>
+                 <div>Prof</div>
              </div>
              <div class="container-slider">
               <div class="range-1">
@@ -115,7 +133,9 @@
                   <option value="10"></option>
                   <option value="11"></option>
                 </datalist>
-                <input type="range" min="1" max="10" step="1" list="custom-list"></input>
+                <input id="profanity-slider" type="range" min="1" max="10" step="1" list="custom-list"></input>
+                <input id="enable-flirting" type="checkbox">
+
               </div>
              </div>
          </div>
@@ -129,7 +149,8 @@
              <div class="icon">⚙</div>
          </div>
      </div>
- 
+     <audio id="audioElement" src="assets/fx/old-radio-button-click-97549.mp3"></audio>
+
      <script>
          function openTab(tabId) {
              document.querySelectorAll(".tab-content").forEach(tab => {
@@ -149,6 +170,7 @@
              document.getElementById("main-content").classList.remove("hidden");
          }
      </script>
+     <script src="settings.js"></script>
  
  </body>
  </html>

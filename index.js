@@ -61,6 +61,44 @@ app.whenReady().then(() => {
   });
 });
 
+// Settings saving and loading
+const settingsPath = path.join(app.getPath("userData"), "settings.json");
+if (!fs.existsSync(settingsPath)) {
+  const defaultSettings = {
+    schedule: {
+      selectedDays: [],
+      focusStartTime: "",
+      focusEndTime: "",
+      interruptionFrequency: 5,
+    },
+    audio: {
+      volume: 50,
+      voice: "default",
+      enablePostProcessing: true,
+    },
+    temperament: {
+      profanityLevel: 5,
+      enableFlirting: false,
+    },
+  };
+  fs.writeFileSync(settingsPath, JSON.stringify(defaultSettings, null, 2));
+}
+// Handle saving settings
+ipcMain.on("save-settings", (event, settings) => {
+  const settingsPath = path.join(app.getPath("userData"), "settings.json");
+  fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2));
+  console.log("Settings saved in index.js to:", settingsPath);
+});
+
+// Handle loading settings
+ipcMain.handle("load-settings", (event) => {
+  const settingsPath = path.join(app.getPath("userData"), "settings.json");
+  let settings = {};
+  if (fs.existsSync(settingsPath)) {
+    settings = JSON.parse(fs.readFileSync(settingsPath, "utf-8"));
+  }
+  return settings;
+});
 ipcMain.on("save-screenshot", async (event) => {
   console.log("Screenshot request received!"); // Debugging log
 

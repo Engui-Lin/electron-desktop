@@ -8,4 +8,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
   getFilePath: () => ipcRenderer.invoke("get-file-path"),
   summarizeImageWithOpenAI: (filePath) =>
     ipcRenderer.invoke("summarize-image", filePath),
+  //Settings
+  loadSettings: () => ipcRenderer.invoke("load-settings"),
+  saveSettings: (settings) => ipcRenderer.send("save-settings", settings),
 });
