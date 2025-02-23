@@ -3,7 +3,13 @@ require("dotenv").config();
 const OpenAI = require("openai");
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-const { app, BrowserWindow, ipcMain, desktopCapturer } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  screen,
+  desktopCapturer,
+} = require("electron");
 const fs = require("fs");
 const path = require("path");
 const { type } = require("os");
@@ -11,8 +17,8 @@ const { type } = require("os");
 let mainWindow;
 let filePath;
 
-const hologramWidth = 500;
-const hologramHeight = 500;
+const hologramWidth = 720 / 3;
+const hologramHeight = 1080 / 3;
 
 app.whenReady().then(() => {
   mainWindow = new BrowserWindow({
@@ -24,21 +30,24 @@ app.whenReady().then(() => {
       nodeIntegration: false,
     },
   });
-  /* 
+
   const primaryDisplay = screen.getPrimaryDisplay();
   const { width, height } = primaryDisplay.workAreaSize;
 
   hologramWindow = new BrowserWindow({
-    width: 1280,
-    height: 720,
-    x: width - 1280, // Position at the rightmost part of the screen
-    y: height - 720, // Position at the bottom
+    transparent: true,
+    frame: false,
+    alwaysOnTop: true,
+    width: hologramWidth,
+    height: hologramHeight,
+    x: width - hologramWidth, // Position at the rightmost part of the screen
+    y: height - hologramHeight, // Position at the bottom
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
     },
-  }); */
-
+  });
+  hologramWindow.setResizable(false);
   hologramWindow.loadFile("hologram.html");
 
   mainWindow.loadFile("index.html");

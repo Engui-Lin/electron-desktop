@@ -1,0 +1,18 @@
+*{
+    border: none;
+    background: none;
+}
+
+img {
+    width:100vw; /*we now know width of img*/
+    position:absolute;
+    bottom:0;  
+    right:0; /*we can calulate 200 - 50 - 100 - 50 = 0 Get it?*/}
+    background-color: black;
+
+div {
+    margin:auto;
+}
+button {
+    position: fixed;
+}
