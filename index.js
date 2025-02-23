@@ -3,7 +3,13 @@ require("dotenv").config();
 const OpenAI = require("openai");
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-const { app, BrowserWindow, ipcMain, desktopCapturer } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  screen,
+  desktopCapturer,
+} = require("electron");
 const fs = require("fs");
 const path = require("path");
 const { ElevenLabsClient, play, save } = require("elevenlabs");
@@ -18,9 +24,12 @@ const elevenlabs = new ElevenLabsClient({
 let mainWindow;
 let filePath;
 let textSummary;
-// let ttsText;
+let ttsText;
 // let ttsText = "test";
-let ttsText = "Ugh, look at you trying so hard to be productive. What a loser.";
+/* let ttsText = "Ugh, look at you trying so hard to be productive. What a loser.";
+ */
+const hologramWidth = 720 / 3;
+const hologramHeight = 1080 / 3;
 
 app.whenReady().then(() => {
   mainWindow = new BrowserWindow({
@@ -33,6 +42,25 @@ app.whenReady().then(() => {
     },
   });
 
+  const primaryDisplay = screen.getPrimaryDisplay();
+  const { width, height } = primaryDisplay.workAreaSize;
+
+  hologramWindow = new BrowserWindow({
+    transparent: true,
+    frame: false,
+    alwaysOnTop: true,
+    width: hologramWidth,
+    height: hologramHeight,
+    x: width - hologramWidth, // Position at the rightmost part of the screen
+    y: height - hologramHeight, // Position at the bottom
+    webPreferences: {
+      contextIsolation: true,
+      nodeIntegration: false,
+    },
+  });
+  hologramWindow.setResizable(false);
+  hologramWindow.loadFile("hologram.html");
+
   mainWindow.loadFile("index.html");
 
   mainWindow.webContents.openDevTools(); // Open DevTools for debugging
@@ -44,6 +72,44 @@ app.whenReady().then(() => {
   });
 });
 
+// Settings saving and loading
+const settingsPath = path.join(app.getPath("userData"), "settings.json");
+if (!fs.existsSync(settingsPath)) {
+  const defaultSettings = {
+    schedule: {
+      selectedDays: [],
+      focusStartTime: "",
+      focusEndTime: "",
+      interruptionFrequency: 5,
+    },
+    audio: {
+      volume: 50,
+      voice: "default",
+      enablePostProcessing: true,
+    },
+    temperament: {
+      profanityLevel: 5,
+      enableFlirting: false,
+    },
+  };
+  fs.writeFileSync(settingsPath, JSON.stringify(defaultSettings, null, 2));
+}
+// Handle saving settings
+ipcMain.on("save-settings", (event, settings) => {
+  const settingsPath = path.join(app.getPath("userData"), "settings.json");
+  fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2));
+  console.log("Settings saved in index.js to:", settingsPath);
+});
+
+// Handle loading settings
+ipcMain.handle("load-settings", (event) => {
+  const settingsPath = path.join(app.getPath("userData"), "settings.json");
+  let settings = {};
+  if (fs.existsSync(settingsPath)) {
+    settings = JSON.parse(fs.readFileSync(settingsPath, "utf-8"));
+  }
+  return settings;
+});
 ipcMain.on("save-screenshot", async (event) => {
   console.log("Screenshot request received!"); // Debugging log
 

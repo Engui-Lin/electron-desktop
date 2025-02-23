@@ -10,6 +10,9 @@ contextBridge.exposeInMainWorld("electronAPI", {
   getTTSText: () => ipcRenderer.invoke("get-tts-text"),
   summarizeImageWithOpenAI: (filePath) =>
     ipcRenderer.invoke("summarize-image", filePath),
+  //Settings
+  loadSettings: () => ipcRenderer.invoke("load-settings"),
+  saveSettings: (settings) => ipcRenderer.send("save-settings", settings),
   generatePromptWithOpenAI: (textSummary) =>
     ipcRenderer.invoke("generate-labs-prompt", textSummary),
   generateTTS: (text) => ipcRenderer.invoke("generate-tts", text),

@@ -1,0 +1,308 @@
+:root {
+    --color-primary: black;
+    --color-secondary: #66ff87;
+    --boxHeight: 24px;
+    --boxPadding: 0 5px;
+}
+
+@font-face {
+    font-family: 'Brass Mono';
+    src: url('assets/BrassMono-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Brass Mono';
+    src: url('assets/BrassMono-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Brass Mono';
+    font-size: 1.2rem;
+
+}
+
+body {
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    padding: 20px;
+    gap: 20px;
+}
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--boxPadding);
+    border: 2px solid var(--color-secondary);
+}
+
+.tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.tab.active-tab {
+    background-color: var(--color-secondary);
+    color: var(--color-primary); /* Optional: Change text color for better visibility */
+  }
+
+button {
+    background: var(--color-primary);
+    color: var(--color-secondary);
+    padding: var(--boxPadding);
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    border: 2px solid var(--color-secondary);
+    transition: background 0.2s;
+}
+
+/* button:hover {
+    text-decoration: underline dashed;
+} */
+
+button:active {
+    background: var(--color-secondary);
+    color: var(--color-primary);
+}
+
+/* Two-column layout for settings */
+.content {
+    display: none;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.active-content {
+    display: grid;
+}
+
+.settings-labels {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.settings-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.time-inputs {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.time-box {
+    padding: var(--boxPadding);
+    background: var(--color-primary);
+    text-align: center;
+    border: solid var(--color-secondary) 2px;
+    color: var(--color-secondary);
+    font-weight: bold;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator{
+    filter: brightness(0) saturate(100%) invert(78%) sepia(64%) saturate(414%) hue-rotate(69deg) brightness(102%) contrast(103%);  }
+
+.days-selector {
+    display: flex;
+    gap: 5px;
+}
+
+select {
+    background: var(--color-primary);
+    border: solid var(--color-secondary);
+    color: var(--color-secondary);
+}
+
+.day-box {
+    padding: var(--boxPadding);
+    background: var(--color-primary);
+    border: solid var(--color-secondary) 2px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* .volume-control {
+    display: flex;
+    gap: 5px;
+} */
+
+.checkbox {
+    width: 28px;
+    height: 28px;
+    position: relative;
+    background: var(--color-secondary);
+    display: inline-block; /* Ensure it doesn't break the layout */
+  }
+  
+  .checkbox input[type="checkbox"] {
+    visibility: hidden; /* Hide the default checkbox */
+  }
+  
+  .checkbox label {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    cursor: pointer;
+    background: var(--color-primary);
+  }
+  
+  .checkbox label:after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    background: var(--color-secondary);
+    opacity: 0;
+    transition: opacity 0.2s; /* Smooth transition for visual feedback */
+  }
+  
+  .checkbox input[type="checkbox"]:checked + label:after {
+    opacity: 1; /* Show the custom checkmark when checked */
+  }
+  
+/*   .checkbox label:hover::after {
+    opacity: 0.3; /* Visual feedback on hover 
+  } */
+
+
+.container-slider {
+    position: relative;
+    max-width: 450px;
+    overflow: hidden;
+  }
+  
+  :root {
+    --tracker-color: var(--color-secondary);
+  }
+  
+  .range-1 {
+    --thumb-color: var(--color-secondary);
+    --thumb-behind-color: var(--color-secondary);
+  }
+  
+  
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    background-color: var(--color-primary);
+  }
+  
+  input[type="range"]:focus {
+    outline: none;
+  }
+    
+  input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    cursor: pointer;
+    border: 2px solid var(--tracker-color);
+    overflow: hidden;
+  }
+  
+  input[type="range"]::-webkit-slider-thumb {
+    height: 12px;
+    width: 45px;
+    cursor: pointer;
+    -webkit-appearance: none;
+    border-bottom: 1px solid var(--thumb-color);
+    box-shadow: 0 0 0 var(--thumb-behind-color), -40px 0 0 var(--thumb-behind-color), -85px 0 0 var(--thumb-behind-color), -130px 0 0 var(--thumb-behind-color),
+        -175px 0 0 var(--thumb-behind-color), -220px 0 0 var(--thumb-behind-color), -265px 0 0 var(--thumb-behind-color), -310px 0 0 var(--thumb-behind-color),
+        -350px 0 0 var(--thumb-behind-color), -390px 0 0 var(--thumb-behind-color), -409px 0 0 var(--thumb-behind-color);
+    background: var(--thumb-color);
+  }
+  
+  datalist {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: -20px;
+  }
+  
+  datalist option {
+    position: relative;
+    background: var(--color-primary);
+    top: -1px;
+    border-left: 2px solid var(--color-secondary);
+    padding-left: 3px;
+    padding-right: 3px;
+    border-right: 2px solid var(--color-secondary);
+    min-height: 17px;
+  }
+  
+  datalist option:first-of-type {
+    visibility: hidden;
+  }
+  
+  datalist option:last-of-type {
+    border-right: 0;
+  }
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--color-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+/* Hide all tab content by default */
+.tab-content {
+    display: none;
+    grid-template-columns: 1fr 2fr; /* Restoring two-column layout */
+    gap: 40px;
+    align-items: center;
+}
+
+/* Show active tab content */
+.tab-content.active {
+    display: grid;
+}
+
+/* Main content (hidden when settings open) */
+.main-content {
+    display: block;
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
