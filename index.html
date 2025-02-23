@@ -36,39 +36,42 @@
  
          <!-- Content for each tab -->
          <div id="audio" class="tab-content">
-             <div class="settings-labels">
-                 <div>Volume</div>
-                 <div>Voice</div>
-                 <div>Enable post-processing</div>
-             </div>
-             <div class="settings-controls">
-                 <div class="volume-control">
-                  <div class="container-slider">
-                    <div class="range-1">
-                      <datalist id="custom-list">
-                        <option value="1"></option>
-                        <option value="2"></option>
-                        <option value="3"></option>
-                        <option value="4"></option>
-                        <option value="5"></option>
-                        <option value="6"></option>
-                        <option value="7"></option>
-                        <option value="8"></option>
-                        <option value="9"></option>
-                        <option value="10"></option>
-                        <option value="11"></option>
-                      </datalist>
-                      <input id="volume-slider" type="range" min="1" max="10" step="1" list="custom-list"></input>
-                    </div>
-                   </div>
-                 </div>
-                 <select id="voice-select">
-                     <option>Sheyla</option>
-                     <option>Alex</option>
-                 </select>
-                 <input id="enable-postprocessing" type="checkbox">
-             </div>
-         </div>
+          <div class="settings-labels">
+            <div>Volume</div>
+            <div>Voice</div>
+            <div>Enable post-processing</div>
+          </div>
+          <div class="settings-controls">
+            <div class="volume-control">
+              <div class="container-slider">
+                <div class="range-1">
+                  <datalist id="custom-list">
+                    <option value="1"></option>
+                    <option value="2"></option>
+                    <option value="3"></option>
+                    <option value="4"></option>
+                    <option value="5"></option>
+                    <option value="6"></option>
+                    <option value="7"></option>
+                    <option value="8"></option>
+                    <option value="9"></option>
+                    <option value="10"></option>
+                    <option value="11"></option>
+                  </datalist>
+                  <input id="volume-slider" type="range" min="1" max="10" step="1" list="custom-list"></input>
+                </div>
+              </div>
+            </div>
+            <select id="voice-select">
+              <option>Sheyla</option>
+              <option>Alex</option>
+            </select>
+            <div class="checkbox">
+              <input type="checkbox" id="enable-postprocessing" name="check" checked>
+              <label for="enable-postprocessing"></label>
+            </div>
+          </div>
+        </div>
  
          <div id="schedule" class="tab-content">
              <div class="settings-labels">
@@ -134,7 +137,11 @@
                   <option value="11"></option>
                 </datalist>
                 <input id="profanity-slider" type="range" min="1" max="10" step="1" list="custom-list"></input>
-                <input id="enable-flirting" type="checkbox">
+
+                <div class="checkbox">
+                  <input type="checkbox" id="enable-flirting" name="check" checked>
+                  <label for="enable-flirting"></label>
+                </div>
 
               </div>
              </div>
@@ -152,12 +159,29 @@
      <audio id="audioElement" src="assets/fx/old-radio-button-click-97549.mp3"></audio>
 
      <script>
-         function openTab(tabId) {
-             document.querySelectorAll(".tab-content").forEach(tab => {
-                 tab.classList.remove("active");
-             });
-             document.getElementById(tabId).classList.add("active");
-         }
+          function openTab(tabId) {
+                // Remove active class from all tab buttons
+                document.querySelectorAll(".tab").forEach((tab) => {
+                  tab.classList.remove("active-tab");
+                });
+
+                // Remove active class from all tab content
+                document.querySelectorAll(".tab-content").forEach((tab) => {
+                  tab.classList.remove("active");
+                });
+
+                // Add active class to the clicked tab button
+                const activeTabButton = document.querySelector(`.tab[onclick="openTab('${tabId}')"]`);
+                if (activeTabButton) {
+                  activeTabButton.classList.add("active-tab");
+                }
+
+                // Add active class to the corresponding tab content
+                const activeTabContent = document.getElementById(tabId);
+                if (activeTabContent) {
+                  activeTabContent.classList.add("active");
+                }
+              }
  
          function openSettings() {
              document.getElementById("main-content").classList.add("hidden");

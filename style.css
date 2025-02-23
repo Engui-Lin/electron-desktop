@@ -1,18 +1,39 @@
 :root {
     --color-primary: black;
-    --color-secondary: #ff6666;
+    --color-secondary: #66ff87;
+    --boxHeight: 24px;
+    --boxPadding: 0 5px;
 }
+
+@font-face {
+    font-family: 'Brass Mono';
+    src: url('assets/BrassMono-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Brass Mono';
+    src: url('assets/BrassMono-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Brass Mono';
+    font-size: 1.2rem;
+
 }
 
 body {
-    background-color: black;
+    background-color: var(--color-primary);
     color: var(--color-secondary);
-    font-family: monospace;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,9 +53,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 1.5em;
     padding: 10px;
-    border-bottom: 2px solid #ff6666;
+    border-bottom: 2px solid var(--color-secondary);
 }
 
 .tabs {
@@ -43,24 +63,29 @@ body {
     gap: 10px;
 }
 
+.tab.active-tab {
+    background-color: var(--color-secondary);
+    color: var(--color-primary); /* Optional: Change text color for better visibility */
+  }
+
 button {
-    background: black;
-    color: #ff6666;
-    padding: 10px;
+    background: var(--color-primary);
+    color: var(--color-secondary);
+    padding: var(--boxPadding);
     text-align: center;
     cursor: pointer;
     font-weight: bold;
-    border: 2px solid #ff6666;
+    border: 2px solid var(--color-secondary);
     transition: background 0.2s;
 }
 
-button:hover {
-    background: #ff9999;
-}
+/* button:hover {
+    text-decoration: underline dashed;
+} */
 
 button:active {
-    background: #ff6666;
-    color: black;
+    background: var(--color-secondary);
+    color: var(--color-primary);
 }
 
 /* Two-column layout for settings */
@@ -79,7 +104,6 @@ button:active {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    font-size: 1.2em;
 }
 
 .settings-controls {
@@ -95,12 +119,11 @@ button:active {
 }
 
 .time-box {
-    width: 80px;
-    padding: 5px;
+    padding: var(--boxPadding);
     background: var(--color-secondary);
     text-align: center;
     border: none;
-    color: black;
+    color: var(--color-primary);
     font-weight: bold;
 }
 
@@ -110,13 +133,13 @@ button:active {
 }
 
 select {
-    background: black;
+    background: var(--color-primary);
     border: solid var(--color-secondary);
     color: var(--color-secondary);
 }
 
 .day-box {
-    padding: 5px 10px;
+    padding: var(--boxPadding);
     background: var(--color-primary);
     border: solid var(--color-secondary) 2px;
     text-align: center;
@@ -129,12 +152,49 @@ select {
     gap: 5px;
 } */
 
-.volume-box {
-    width: 30px;
-    height: 30px;
-    background: #ff6666;
+.checkbox {
+    width: 28px;
+    height: 28px;
+    position: relative;
+    background: var(--color-secondary);
+    display: inline-block; /* Ensure it doesn't break the layout */
+  }
+  
+  .checkbox input[type="checkbox"] {
+    visibility: hidden; /* Hide the default checkbox */
+  }
+  
+  .checkbox label {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 4px;
+    left: 4px;
     cursor: pointer;
-}
+    background: var(--color-primary);
+  }
+  
+  .checkbox label:after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    background: var(--color-secondary);
+    opacity: 0;
+    transition: opacity 0.2s; /* Smooth transition for visual feedback */
+  }
+  
+  .checkbox input[type="checkbox"]:checked + label:after {
+    opacity: 1; /* Show the custom checkmark when checked */
+  }
+  
+/*   .checkbox label:hover::after {
+    opacity: 0.3; /* Visual feedback on hover 
+  } */
+
+
 .container-slider {
     position: relative;
     max-width: 450px;
@@ -154,7 +214,7 @@ select {
   input[type="range"] {
     -webkit-appearance: none;
     width: 100%;
-    background-color: black;
+    background-color: var(--color-primary);
   }
   
   input[type="range"]:focus {
@@ -188,7 +248,7 @@ select {
   
   datalist option {
     position: relative;
-    background: black;
+    background: var(--color-primary);
     top: -1px;
     border-left: 2px solid var(--color-secondary);
     padding-left: 3px;
@@ -219,7 +279,6 @@ select {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 1.5em;
 }
 
 /* Hide all tab content by default */
@@ -239,7 +298,6 @@ select {
 .main-content {
     display: block;
     text-align: center;
-    font-size: 2em;
 }
 
 .hidden {

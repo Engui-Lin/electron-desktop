@@ -47,8 +47,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       document.querySelectorAll(".day-box").forEach((day) => {
         if (selectedDays.includes(day.innerText.toLowerCase())) {
-          day.style.background = "#ff6666";
-          day.style.color = "black";
+          day.style.background = "var(--color-secondary)";
+          day.style.color = "var(--color-primary)";
         }
       });
       document.querySelectorAll(".time-box")[0].value = focusStartTime;
@@ -182,4 +182,43 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Load settings when the page loads
   loadSettings();
+});
+document.addEventListener("DOMContentLoaded", () => {
+  // Function to play sound
+  function playSound() {
+    const audio = new Audio("assets/fx/old-radio-button-click-97549.mp3");
+    audio.play().catch((error) => {
+      console.error("Error playing sound:", error);
+    });
+  }
+
+  // Attach event listeners to tabs
+  document.querySelectorAll(".tab").forEach((tab) => {
+    tab.addEventListener("click", playSound);
+  });
+
+  // Attach event listeners to dropdowns
+  document.querySelectorAll("select").forEach((dropdown) => {
+    dropdown.addEventListener("change", playSound);
+  });
+
+  // Attach event listeners to days
+  document.querySelectorAll(".day-box").forEach((day) => {
+    day.addEventListener("click", playSound);
+  });
+
+  // Attach event listeners to sliders
+  document.querySelectorAll('input[type="range"]').forEach((slider) => {
+    slider.addEventListener("input", playSound);
+  });
+
+  // Attach event listeners to checkboxes
+  document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+    checkbox.addEventListener("change", playSound);
+  });
+
+  // Attach event listeners to time inputs
+  document.querySelectorAll('input[type="time"]').forEach((timeInput) => {
+    timeInput.addEventListener("input", playSound);
+  });
 });
