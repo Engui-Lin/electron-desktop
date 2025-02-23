@@ -13,10 +13,23 @@ document.getElementById("screenshotBtn").addEventListener("click", () => {
   window.electronAPI.takeScreenshot();
 });
 
-// Show notification when screenshot is saved
-if (window.electronAPI) {
-  window.electronAPI.onScreenshotSaved((filePath) => {
-    console.log("Screenshot saved at:", filePath);
-    alert(`Screenshot saved at:\n${filePath}`);
+document
+  .getElementById("sendToOpenAIBtn")
+  .addEventListener("click", async () => {
+    console.log("Send-to-OpenAI button clicked!");
+    filePath = await window.electronAPI.getFilePath();
+
+    console.log("Sending screenshot to OpenAI...");
+    const response = await window.electronAPI.summarizeImageWithOpenAI(
+      filePath
+    );
+
+    console.log("AI Summary:", response);
+    alert(`AI Summary:\n${response}`);
   });
-}
+
+// Show notification when screenshot is saved
+window.electronAPI.onScreenshotSaved((filePath) => {
+  console.log("Screenshot saved at:", filePath);
+  // alert(`Screenshot saved at:\n${filePath}`);
+});

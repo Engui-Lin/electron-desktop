@@ -5,12 +5,17 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electronmon ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^34.2.0"
+    "electron": "^34.2.0",
+    "electronmon": "^2.0.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "openai": "^4.85.4"
   }
 }
