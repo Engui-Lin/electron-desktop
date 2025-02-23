@@ -6,6 +6,7 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const { app, BrowserWindow, ipcMain, desktopCapturer } = require("electron");
 const fs = require("fs");
 const path = require("path");
+const { type } = require("os");
 
 let mainWindow;
 let filePath;
