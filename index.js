@@ -96,16 +96,6 @@ ipcMain.handle("get-file-path", () => {
   return filePath;
 });
 
-ipcMain.handle("convert-image-to-base64", async (_, filePath) => {
-  try {
-    const imageBuffer = fs.readFileSync(filePath);
-    return imageBuffer.toString("base64");
-  } catch (error) {
-    console.error("Error reading image file:", error);
-    return null;
-  }
-});
-
 // Handle image summary request
 ipcMain.handle("summarize-image", async (event, filePath) => {
   try {
@@ -131,7 +121,7 @@ ipcMain.handle("summarize-image", async (event, filePath) => {
     });
 
     console.log(response.choices[0]);
-    return response.choices[0];
+    return response.choices[0].message.content;
   } catch (error) {
     console.error("Error summarizing image:", error);
     return error;
