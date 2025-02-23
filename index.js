@@ -155,7 +155,7 @@ ipcMain.handle("generate-labs-prompt", async (event, textSummary) => {
     const context = `This is a summary of what the user is doing on their computer ${textSummary}`;
     const condition = "Is the user doing something productive?";
     const demand =
-      "If yes, you will be upset. Otherwise you'll be happy, supportive, and encouraging. What will you say to them? Your response should be maximum 2 sentences.";
+      "If not, you will be upset. Otherwise you'll be happy, supportive, and encouraging. What will you say to them? Your response should be maximum 2 sentences.";
     const fullPrompt = `${prefix}. ${context}. ${condition}. ${demand}`;
     console.log("fullPrompt: ", fullPrompt);
 
@@ -181,6 +181,7 @@ ipcMain.handle("generate-labs-prompt", async (event, textSummary) => {
 
 ipcMain.handle("generate-tts", async (event, text) => {
   try {
+    /* 
     const downloadsFolder = path.join(
       app.getPath("downloads"),
       "electron-screenshots"
@@ -192,6 +193,21 @@ ipcMain.handle("generate-tts", async (event, text) => {
     }
 
     const mp3Path = path.join(downloadsFolder, "output.mp3");
+
+    if (fs.existsSync(mp3Path)) {
+      fs.unlinkSync(mp3Path);
+      console.log(`File deleted: ${mp3Path}`);
+    }
+ */
+    //Changed it to save the file in the same directory as the app
+    const assetsFolder = path.join(__dirname, "assets");
+
+    // Ensure the directory exists
+    if (!fs.existsSync(assetsFolder)) {
+      fs.mkdirSync(assetsFolder, { recursive: true });
+    }
+
+    const mp3Path = path.join(assetsFolder, "output.mp3");
 
     if (fs.existsSync(mp3Path)) {
       fs.unlinkSync(mp3Path);

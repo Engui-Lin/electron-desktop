@@ -11,6 +11,72 @@
     <button id="sendToOpenAIBtn">Send to OpenAI</button>
     <button id="generatePrompt">Generate TTS Prompt</button>
     <button id="generateTTS">Generate TTS</button>
+    <button id="playButton">Lipsync</button>
+    <br>
+    <img style="width: 200px;" id="mouth" src="assets/mouth-closed.png" alt="Mouth Animation">
+
     <script src="renderer.js"></script>
+    <script>
+    
+    // Logic for mp3 to lipsync
+
+      // Audio setup
+      const audio = new Audio('assets/output.mp3'); 
+      const images = ['assets/mouth-closed.png', 'assets/mouth-half-closed.png', 'assets/mouth-open.png'];
+      
+      const imgElement = document.getElementById("mouth");
+      const playButton = document.getElementById("playButton");
+      
+      // Web Audio API setup
+      let audioCtx, analyser, dataArray;
+      
+      function setupAudio() {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 256;
+      
+        const source = audioCtx.createMediaElementSource(audio);
+        source.connect(analyser);
+        analyser.connect(audioCtx.destination);
+      
+        dataArray = new Uint8Array(analyser.frequencyBinCount);
+      }
+      
+      // Function to update mouth animation
+      function animateMouth() {
+        if (!audioCtx || audio.paused) return;
+      
+        analyser.getByteFrequencyData(dataArray);
+      
+        let sum = 0;
+        for (let i = 0; i < dataArray.length; i++) {
+          sum += dataArray[i];
+        }
+        const avgVolume = sum / dataArray.length;
+      
+        // Choose the mouth image based on volume
+        if (avgVolume < 50) {
+          imgElement.src = images[0]; // Closed mouth
+        } else if (avgVolume < 120) {
+          imgElement.src = images[1]; // Half-open mouth
+        } else {
+          imgElement.src = images[2]; // Fully open mouth
+        }
+      
+        requestAnimationFrame(animateMouth);
+      }
+      
+      // Start audio and animation on button click
+      playButton.addEventListener("click", () => {
+        if (!audioCtx) {
+          setupAudio();
+        }
+      
+        audioCtx.resume().then(() => {
+          audio.play();
+          animateMouth();
+        });
+      });
+      </script>
   </body>
 </html>
