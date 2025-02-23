@@ -11,6 +11,9 @@ const { type } = require("os");
 let mainWindow;
 let filePath;
 
+const hologramWidth = 500;
+const hologramHeight = 500;
+
 app.whenReady().then(() => {
   mainWindow = new BrowserWindow({
     width: 1280,
@@ -21,6 +24,22 @@ app.whenReady().then(() => {
       nodeIntegration: false,
     },
   });
+  /* 
+  const primaryDisplay = screen.getPrimaryDisplay();
+  const { width, height } = primaryDisplay.workAreaSize;
+
+  hologramWindow = new BrowserWindow({
+    width: 1280,
+    height: 720,
+    x: width - 1280, // Position at the rightmost part of the screen
+    y: height - 720, // Position at the bottom
+    webPreferences: {
+      contextIsolation: true,
+      nodeIntegration: false,
+    },
+  }); */
+
+  hologramWindow.loadFile("hologram.html");
 
   mainWindow.loadFile("index.html");
 

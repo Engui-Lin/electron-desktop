@@ -1,0 +1,246 @@
+:root {
+    --color-primary: #1e1e1f;
+    --color-secondary: #ff6666;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: black;
+    color: #ff6666;
+    font-family: monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    padding: 20px;
+    gap: 20px;
+}
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.5em;
+    padding: 10px;
+    border-bottom: 2px solid #ff6666;
+}
+
+.tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+button {
+    background: black;
+    color: #ff6666;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    border: 2px solid #ff6666;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background: #ff9999;
+}
+
+button:active {
+    background: #ff6666;
+    color: black;
+}
+
+/* Two-column layout for settings */
+.content {
+    display: none;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.active-content {
+    display: grid;
+}
+
+.settings-labels {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-size: 1.2em;
+}
+
+.settings-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.time-inputs {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.time-box {
+    width: 80px;
+    padding: 5px;
+    background: #ff6666;
+    text-align: center;
+    border: none;
+    color: black;
+    font-weight: bold;
+}
+
+.days-selector {
+    display: flex;
+    gap: 5px;
+}
+
+select {
+    background: black;
+    border: solid var(--color-secondary);
+    color: var(--color-secondary);
+}
+
+.day-box {
+    padding: 5px 10px;
+    background: #ff6666;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* .volume-control {
+    display: flex;
+    gap: 5px;
+} */
+
+.volume-box {
+    width: 30px;
+    height: 30px;
+    background: #ff6666;
+    cursor: pointer;
+}
+.container-slider {
+    position: relative;
+    max-width: 450px;
+    overflow: hidden;
+  }
+  
+  :root {
+    --tracker-color: var(--color-secondary);
+  }
+  
+  .range-1 {
+    --thumb-color: var(--color-secondary);
+    --thumb-behind-color: var(--color-secondary);
+  }
+  
+  
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    background-color: black;
+  }
+  
+  input[type="range"]:focus {
+    outline: none;
+  }
+    
+  input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    cursor: pointer;
+    border: 2px solid var(--tracker-color);
+    overflow: hidden;
+  }
+  
+  input[type="range"]::-webkit-slider-thumb {
+    height: 12px;
+    width: 45px;
+    cursor: pointer;
+    -webkit-appearance: none;
+    border-bottom: 1px solid var(--thumb-color);
+    box-shadow: 0 0 0 var(--thumb-behind-color), -40px 0 0 var(--thumb-behind-color), -85px 0 0 var(--thumb-behind-color), -130px 0 0 var(--thumb-behind-color),
+        -175px 0 0 var(--thumb-behind-color), -220px 0 0 var(--thumb-behind-color), -265px 0 0 var(--thumb-behind-color), -310px 0 0 var(--thumb-behind-color),
+        -350px 0 0 var(--thumb-behind-color), -390px 0 0 var(--thumb-behind-color), -409px 0 0 var(--thumb-behind-color);
+    background: var(--thumb-color);
+  }
+  
+  datalist {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: -20px;
+  }
+  
+  datalist option {
+    position: relative;
+    background: black;
+    top: -1px;
+    border-left: 2px solid var(--color-secondary);
+    padding-left: 3px;
+    padding-right: 3px;
+    border-right: 2px solid var(--color-secondary);
+    min-height: 17px;
+  }
+  
+  datalist option:first-of-type {
+    visibility: hidden;
+  }
+  
+  datalist option:last-of-type {
+    border-right: 0;
+  }
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--color-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.5em;
+}
+
+/* Hide all tab content by default */
+.tab-content {
+    display: none;
+    grid-template-columns: 1fr 2fr; /* Restoring two-column layout */
+    gap: 40px;
+    align-items: center;
+}
+
+/* Show active tab content */
+.tab-content.active {
+    display: grid;
+}
+
+/* Main content (hidden when settings open) */
+.main-content {
+    display: block;
+    text-align: center;
+    font-size: 2em;
+}
+
+.hidden {
+    display: none;
+}

@@ -1,14 +1,156 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Electron Desktop App</title>
-  </head>
-  <body>
-    <h1>Electron Desktop App</h1>
-    <button id="screenshotBtn">Take Screenshot</button>
-    <button id="sendToOpenAIBtn">Send to OpenAI</button>
-    <script src="renderer.js"></script>
-  </body>
-</html>
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Ass tits titan</title>
+     <link rel="stylesheet" href="style.css">
+ </head>
+ <body>
+ 
+     <div id="main-content" class="main-content">
+         <p>Hey!</p>
+         <div class="main-body">
+
+         </div>
+         <h1>Electron Desktop App</h1>
+         <button id="screenshotBtn">Take Screenshot</button>
+         <button id="sendToOpenAIBtn">Send to OpenAI</button>
+         <script src="renderer.js"></script>
+         <button onclick="openSettings()">Open Settings</button>
+     </div>
+ 
+     <!-- Settings Menu -->
+     <div id="settings-container" class="container hidden">
+         <div class="settings-header">
+             <span>Settings</span>
+             <span onclick="closeSettings()" style="cursor: pointer;">X</span>
+         </div>
+ 
+         <div class="tabs">
+             <button class="tab" onclick="openTab('audio')">Audio</button>
+             <button class="tab" onclick="openTab('schedule')">Schedule</button>
+             <button class="tab" onclick="openTab('temperament')">Temperament</button>
+             <button class="tab" onclick="openTab('extra')">Extra</button>
+         </div>
+ 
+         <!-- Content for each tab -->
+         <div id="audio" class="tab-content">
+             <div class="settings-labels">
+                 <div>Volume</div>
+                 <div>Voice</div>
+                 <div>Enable post-processing</div>
+             </div>
+             <div class="settings-controls">
+                 <div class="volume-control">
+                  <div class="container-slider">
+                    <div class="range-1">
+                      <datalist id="custom-list">
+                        <option value="1"></option>
+                        <option value="2"></option>
+                        <option value="3"></option>
+                        <option value="4"></option>
+                        <option value="5"></option>
+                        <option value="6"></option>
+                        <option value="7"></option>
+                        <option value="8"></option>
+                        <option value="9"></option>
+                        <option value="10"></option>
+                        <option value="11"></option>
+                      </datalist>
+                      <input type="range" min="1" max="10" step="1" list="custom-list"></input>
+                    </div>
+                   </div>
+                 </div>
+                 <select>
+                     <option>Sheyla</option>
+                     <option>Alex</option>
+                 </select>
+                 <input type="checkbox">
+             </div>
+         </div>
+ 
+         <div id="schedule" class="tab-content">
+             <div class="settings-labels">
+                 <div>Focus schedule</div>
+                 <div>On these days</div>
+                 <div>Interruption frequency</div>
+             </div>
+             <div class="settings-controls">
+                 <div class="time-inputs">
+                     <span>From</span>
+                     <input type="time" class="time-box">
+                     <span>To</span>
+                     <input type="time" class="time-box">
+                 </div>
+                 <div class="days-selector">
+                     <div class="day-box">mon</div>
+                     <div class="day-box">tue</div>
+                     <div class="day-box">wed</div>
+                     <div class="day-box">thu</div>
+                     <div class="day-box">fri</div>
+                     <div class="day-box">sat</div>
+                     <div class="day-box">sun</div>
+                 </div>
+             </div>
+         </div>
+ 
+         <div id="temperament" class="tab-content">
+             <div class="settings-labels">
+                 <div>Mode</div>
+                 <div>Reactivity</div>
+             </div>
+             <div class="container-slider">
+              <div class="range-1">
+                <datalist id="custom-list">
+                  <option value="1"></option>
+                  <option value="2"></option>
+                  <option value="3"></option>
+                  <option value="4"></option>
+                  <option value="5"></option>
+                  <option value="6"></option>
+                  <option value="7"></option>
+                  <option value="8"></option>
+                  <option value="9"></option>
+                  <option value="10"></option>
+                  <option value="11"></option>
+                </datalist>
+                <input type="range" min="1" max="10" step="1" list="custom-list"></input>
+              </div>
+             </div>
+         </div>
+ 
+         <div id="extra" class="tab-content">
+             <p>Extra settings go here.</p>
+         </div>
+ 
+         <div class="footer">
+             <div class="icon">⏻</div>
+             <div class="icon">⚙</div>
+         </div>
+     </div>
+ 
+     <script>
+         function openTab(tabId) {
+             document.querySelectorAll(".tab-content").forEach(tab => {
+                 tab.classList.remove("active");
+             });
+             document.getElementById(tabId).classList.add("active");
+         }
+ 
+         function openSettings() {
+             document.getElementById("main-content").classList.add("hidden");
+             document.getElementById("settings-container").classList.remove("hidden");
+             openTab("audio"); // Default to first tab
+         }
+ 
+         function closeSettings() {
+             document.getElementById("settings-container").classList.add("hidden");
+             document.getElementById("main-content").classList.remove("hidden");
+         }
+     </script>
+ 
+ </body>
+ </html>
+ 
+ 
