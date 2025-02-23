@@ -48,3 +48,14 @@ document
     console.log("Generated TTS Prompt:", response);
     alert(`Generated TTS Prompt:\n${response}`);
   });
+
+document.getElementById("generateTTS").addEventListener("click", async () => {
+  console.log("generateTTS button clicked!");
+  ttsText = await window.electronAPI.getTTSText();
+
+  console.log("Sending command to ElevenLabs...");
+  await window.electronAPI.generateTTS(ttsText);
+
+  // console.log("Generated TTS Prompt:", response);
+  // alert(`Generated TTS Prompt:\n${response}`);
+});
