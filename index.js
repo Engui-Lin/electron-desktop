@@ -181,6 +181,7 @@ ipcMain.handle("generate-labs-prompt", async (event, textSummary) => {
 
 ipcMain.handle("generate-tts", async (event, text) => {
   try {
+    /* 
     const downloadsFolder = path.join(
       app.getPath("downloads"),
       "electron-screenshots"
@@ -192,6 +193,21 @@ ipcMain.handle("generate-tts", async (event, text) => {
     }
 
     const mp3Path = path.join(downloadsFolder, "output.mp3");
+
+    if (fs.existsSync(mp3Path)) {
+      fs.unlinkSync(mp3Path);
+      console.log(`File deleted: ${mp3Path}`);
+    }
+ */
+    //Changed it to save the file in the same directory as the app
+    const assetsFolder = path.join(__dirname, "assets");
+
+    // Ensure the directory exists
+    if (!fs.existsSync(assetsFolder)) {
+      fs.mkdirSync(assetsFolder, { recursive: true });
+    }
+
+    const mp3Path = path.join(assetsFolder, "output.mp3");
 
     if (fs.existsSync(mp3Path)) {
       fs.unlinkSync(mp3Path);
