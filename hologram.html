@@ -7,24 +7,62 @@
     <link rel="stylesheet" href="hologramStyle.css">
 </head>
 <body>
-    <button style="z-index: 4;" id="playButton">Play Sound</button>
+<!--     <button style="z-index: 4;" id="playButton">Play Sound</button>
+ -->
 
-    <div class="buzz_wrapper">
+ <div class="buzz_wrapper">
+    <div>
+        <div class="eyeButton">
+            <img class="eyeButton" src="assets/eye.png">
+
+<!--             <div class="iris"></div>
+ -->     </div>
+        
+        <div class="glitch" data-text="GLITCH">GLITCH</div> 
+    </div>
+    <div class="">
         <div class="text">
-        <span>
-            <div id="imageContainer">
-                <img id="mouth" src="mouth-closed.png" alt="Mouth Animation">
-            </div>
-        </span>
+            <span>
+                <div class="hologramImage" id="imageContainer">
+                    <img id="mouth" src="mouth-closed.png" alt="Mouth Animation">
+                </div>
+            </span>
         </div>
         <div class="scanline"></div>
-        
-      </div>
+    </div>
+</div>
+
 
 
     <script>
+/*        const { ipcRenderer } = require("electron");
+
+document.addEventListener("DOMContentLoaded", function () {
+    const iris = document.querySelector(".iris");
+    const eye = document.querySelector(".eyeButton");
+
+    ipcRenderer.on("update-mouse-position", (event, mouse) => {
+        const eyeRect = eye.getBoundingClientRect();
+        const eyeCenterX = eyeRect.left + eyeRect.width / 2;
+        const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+
+        const deltaX = mouse.x - eyeCenterX;
+        const deltaY = mouse.y - eyeCenterY;
+
+        const distance = Math.sqrt(deltaX ** 2 + deltaY ** 2);
+        const maxDistance = 15; // Max iris movement within eye
+
+        const ratio = Math.min(maxDistance / distance, 1);
+
+        const irisX = deltaX * ratio;
+        const irisY = deltaY * ratio;
+
+        iris.style.transform = `translate(${irisX}px, ${irisY}px)`;
+    });
+}); */
+
         // Audio setup
-        const audio = new Audio('your-audio.mp3');
+        const audio = new Audio('your-audio2.mp3');
         const images = [
             'mouth-closed.png',
             'mouth-half-closed.png',
@@ -51,6 +89,7 @@
 
         // Function to update mouth animation
         function animateMouth() {
+
             if (!audioCtx || audio.paused) return;
 
             analyser.getByteFrequencyData(dataArray);
@@ -72,18 +111,52 @@
 
             requestAnimationFrame(animateMouth);
         }
+        const eyeButton = document.querySelector('.eyeButton');
+        const hologramImage = document.querySelector('.hologramImage');
+        let isVisible = false;
 
-        // Start audio and animation on button click
-        playButton.addEventListener('click', () => {
-            if (!audioCtx) {
-                setupAudio();
-            }
-
-            audioCtx.resume().then(() => {
-                audio.play();
-                animateMouth();
-            });
+        eyeButton.addEventListener('click', () => {
+    if (!isVisible) {
+        // Open character & start audio
+        if (!audioCtx) setupAudio();
+        audioCtx.resume().then(() => {
+            audio.play();
+            animateMouth();
         });
+
+        // Show character with animation
+        hologramImage.style.display = "block";
+        setTimeout(() => {
+            hologramImage.classList.add('active');
+            hologramImage.classList.remove('hidden');
+        }, 10);
+    } else {
+        // Stop audio & hide character smoothly
+        audio.pause();
+        audio.currentTime = 0; // Reset audio
+        hologramImage.classList.add('hidden');
+        hologramImage.classList.remove('active');
+
+        setTimeout(() => {
+            hologramImage.style.display = "none";
+        }, 500);
+    }
+    isVisible = !isVisible;
+});
+
+        //  Auto-hide when audio finishes
+        audio.addEventListener('ended', () => {
+            if (isVisible) {
+                hologramImage.classList.add('hidden');
+                hologramImage.classList.remove('active');
+
+                setTimeout(() => {
+                    hologramImage.style.display = "none";
+                }, 500);
+                isVisible = false;
+            }
+        });
+        
 
     </script>
 

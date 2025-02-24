@@ -59,9 +59,15 @@ app.whenReady().then(() => {
     },
   });
   hologramWindow.setResizable(false);
+
   hologramWindow.loadFile("hologram.html");
 
   mainWindow.loadFile("index.html");
+  // Send mouse position to renderer every 50ms
+  setInterval(() => {
+    const { x, y } = screen.getCursorScreenPoint();
+    hologramWindow.webContents.send("update-mouse-position", { x, y });
+  }, 50);
 
   mainWindow.webContents.openDevTools(); // Open DevTools for debugging
 
@@ -70,6 +76,10 @@ app.whenReady().then(() => {
       app.quit();
     }
   });
+});
+
+ipcMain.handle("get-mouse-position", () => {
+  return screen.getCursorScreenPoint();
 });
 
 // Settings saving and loading
