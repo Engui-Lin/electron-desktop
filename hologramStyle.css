@@ -9,14 +9,6 @@ img {
     width:100vw; 
 }
 
-/* .eyeButton {
-    width: 75px;
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transition: transform 0.1s linear;
-    z-index: 4;
-} */
 .eyeButton {
     width: 75px;
     height: 75px;
