@@ -10,14 +10,21 @@
     <button style="z-index: 4" id="playButton">Play Sound</button>
 
     <div class="buzz_wrapper">
-      <div class="text">
-        <span>
-          <div id="imageContainer">
-            <img id="mouth" src="mouth-closed.png" alt="Mouth Animation" />
-          </div>
-        </span>
+      <div>
+        <div class="eyeButton">
+          <img class="eyeButton" src="assets/eye.png" />
+        </div>
       </div>
-      <div class="scanline"></div>
+      <div class="">
+        <div class="text">
+          <span>
+            <div class="hologramImage" id="imageContainer">
+              <img id="mouth" src="mouth-closed.png" alt="Mouth Animation" />
+            </div>
+          </span>
+        </div>
+        <div class="scanline"></div>
+      </div>
     </div>
 
     <script>
@@ -33,6 +40,10 @@
 
       const imgElement = document.getElementById("mouth");
       const playButton = document.getElementById("playButton");
+
+      const eyeButton = document.querySelector(".eyeButton");
+      const hologramImage = document.querySelector(".hologramImage");
+      let isVisible = false;
 
       // Web Audio API setup
       let audioCtx, analyser, dataArray;
@@ -80,22 +91,83 @@
 
       // Listen for the event from main.js to start audio
       ipcRenderer.on("start-audio", (event) => {
-        if (!audioCtx) {
-          setupAudio();
+        if (!isVisible) {
+          setTimeout(() => {
+            hologramImage.classList.add("active");
+            hologramImage.classList.remove("hidden");
+          }, 10);
+
+          if (!audioCtx) {
+            setupAudio();
+          }
+
+          // Stop current audio
+          audio.pause();
+          audio.currentTime = 0;
+
+          // Append a timestamp to bypass cache
+          audio.src = `assets/output.mp3?t=${new Date().getTime()}`;
+          audio.load(); // Forces the browser to reload the file
+
+          audioCtx.resume().then(() => {
+            audio.play();
+            animateMouth();
+          });
+        } else {
+          // Stop audio & hide character smoothly
+          audio.pause();
+          audio.currentTime = 0; // Reset audio
+          hologramImage.classList.add("hidden");
+          hologramImage.classList.remove("active");
+
+          setTimeout(() => {
+            hologramImage.style.display = "none";
+          }, 500);
         }
+        isVisible = !isVisible;
+      });
 
-        // Stop current audio
-        audio.pause();
-        audio.currentTime = 0;
+      eyeButton.addEventListener("click", () => {
+        // if (!isVisible) {
+        //   // Open character & start audio
+        //   if (!audioCtx) setupAudio();
+        //   audioCtx.resume().then(() => {
+        //     audio.play();
+        //     animateMouth();
+        //   });
 
-        // Append a timestamp to bypass cache
-        audio.src = `assets/output.mp3?t=${new Date().getTime()}`;
-        audio.load(); // Forces the browser to reload the file
+        //   // Show character with animation
+        //   hologramImage.style.display = "block";
+        //   setTimeout(() => {
+        //     hologramImage.classList.add("active");
+        //     hologramImage.classList.remove("hidden");
+        //   }, 10);
+        // } else {
+        //   // Stop audio & hide character smoothly
+        //   audio.pause();
+        //   audio.currentTime = 0; // Reset audio
+        //   hologramImage.classList.add("hidden");
+        //   hologramImage.classList.remove("active");
 
-        audioCtx.resume().then(() => {
-          audio.play();
-          animateMouth();
-        });
+        //   setTimeout(() => {
+        //     hologramImage.style.display = "none";
+        //   }, 500);
+        // }
+        // isVisible = !isVisible;
+        ipcRenderer.send("manual-triggered");
+      });
+
+      //  Auto-hide when audio finishes
+      audio.addEventListener("ended", () => {
+        if (isVisible) {
+          hologramImage.classList.add("hidden");
+          hologramImage.classList.remove("active");
+
+          setTimeout(() => {
+            hologramImage.style.display = "none";
+          }, 500);
+          isVisible = false;
+        }
       });
     </script>
   </body>

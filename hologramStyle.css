@@ -9,7 +9,120 @@ img {
     width:100vw; 
 }
 
+/* ========================================================== */
 
+.eyeButton {
+  width: 75px;
+  height: 75px;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  z-index: 4;
+  transition: transform 0.1s linear;
+}
+.eyeButton:hover {
+  cursor: pointer;
+}
+
+/* Keep the glitch effect */
+.eyeButton::before,
+.eyeButton::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url('assets/eye.png') no-repeat center;
+    background-size: contain;
+    top: 0;
+    left: 0;
+    opacity: 0.8;
+    mix-blend-mode: screen;
+    pointer-events: none;
+}
+
+/* Glitch Red Layer */
+.eyeButton:hover::before {
+  animation: glitch-red 0.2s infinite linear alternate;
+  transform: translate(-2px, 0);
+  filter: blur(1px) contrast(200%) brightness(1.2);
+  opacity: 0.7;
+}
+
+
+/* Glitch Blue Layer */
+.eyeButton:hover::after {
+  animation: glitch-blue 0.2s infinite linear alternate-reverse;
+  transform: translate(2px, 0);
+  filter: blur(1px) contrast(200%) brightness(1.2);
+  opacity: 0.7;
+}
+
+.eyeButton:not(:focus):hover {
+  transform: scale(1,0.5) translateX(-50%);
+}
+.eyeButton:focus {
+  transform: scale(1,1) translateX(-50%);
+}
+
+@keyframes glitch-red {
+  0% { transform: translate(-2px, 0); opacity: 0.8; }
+  25% { transform: translate(2px, -1px); opacity: 1; }
+  50% { transform: translate(-3px, 2px); opacity: 0.8; }
+  75% { transform: translate(1px, -2px); opacity: 1; }
+  100% { transform: translate(-2px, 1px); opacity: 0.8; }
+}
+
+@keyframes glitch-blue {
+  0% { transform: translate(2px, 0); opacity: 0.8; }
+  25% { transform: translate(-2px, 1px); opacity: 1; }
+  50% { transform: translate(3px, -2px); opacity: 0.8; }
+  75% { transform: translate(-1px, 2px); opacity: 1; }
+  100% { transform: translate(2px, -1px); opacity: 0.8; }
+}
+
+.hologramContent{
+  animation: scaling 2s 1; 
+  
+  }
+  
+  .hologramImage {
+      display: none; /* Start hidden */
+      transform: scale(0) skew(0, 0) rotate3d(0, 0, 0, 0);
+      transition: transform 0.5s ease-in-out, opacity 0.5s;
+      opacity: 0;
+  }
+  
+  .hologramImage.active {
+      display: block;
+      transform: scale(1) ;
+      transform-origin: 50% 100%;
+  
+      opacity: 1;
+  }
+  
+  .hologramImage.hidden {
+      transform: scale(0) skew(45deg, 45deg) rotate3d(0, 5, 0, 60deg);
+      transform-origin: 50% 100%;
+  
+      opacity: 0;
+  }
+  
+  @keyframes scaling {
+      0% {
+        transform: scale(0);
+      }
+      75% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+/* ========================================================== */
 div {
     margin:auto;
 }
