@@ -92,6 +92,9 @@
       // Listen for the event from main.js to start audio
       ipcRenderer.on("start-audio", (event) => {
         if (!isVisible) {
+          isVisible = true;
+          // Show character with animation
+          hologramImage.style.display = "block";
           setTimeout(() => {
             hologramImage.classList.add("active");
             hologramImage.classList.remove("hidden");
@@ -114,6 +117,36 @@
             animateMouth();
           });
         } else {
+          //   // Stop audio & hide character smoothly
+          //   audio.pause();
+          //   audio.currentTime = 0; // Reset audio
+          //   hologramImage.classList.add("hidden");
+          //   hologramImage.classList.remove("active");
+          //   setTimeout(() => {
+          //     hologramImage.style.display = "none";
+          //   }, 500);
+          //   isVisible = false;
+        }
+        // isVisible = !isVisible;
+      });
+
+      eyeButton.addEventListener("click", () => {
+        if (!isVisible) {
+          ipcRenderer.send("manual-triggered");
+          //   // Open character & start audio
+          //   if (!audioCtx) setupAudio();
+          //   audioCtx.resume().then(() => {
+          //     audio.play();
+          //     animateMouth();
+          //   });
+
+          //   // Show character with animation
+          //   hologramImage.style.display = "block";
+          //   setTimeout(() => {
+          //     hologramImage.classList.add("active");
+          //     hologramImage.classList.remove("hidden");
+          //   }, 10);
+        } else {
           // Stop audio & hide character smoothly
           audio.pause();
           audio.currentTime = 0; // Reset audio
@@ -123,38 +156,8 @@
           setTimeout(() => {
             hologramImage.style.display = "none";
           }, 500);
+          isVisible = false;
         }
-        isVisible = !isVisible;
-      });
-
-      eyeButton.addEventListener("click", () => {
-        // if (!isVisible) {
-        //   // Open character & start audio
-        //   if (!audioCtx) setupAudio();
-        //   audioCtx.resume().then(() => {
-        //     audio.play();
-        //     animateMouth();
-        //   });
-
-        //   // Show character with animation
-        //   hologramImage.style.display = "block";
-        //   setTimeout(() => {
-        //     hologramImage.classList.add("active");
-        //     hologramImage.classList.remove("hidden");
-        //   }, 10);
-        // } else {
-        //   // Stop audio & hide character smoothly
-        //   audio.pause();
-        //   audio.currentTime = 0; // Reset audio
-        //   hologramImage.classList.add("hidden");
-        //   hologramImage.classList.remove("active");
-
-        //   setTimeout(() => {
-        //     hologramImage.style.display = "none";
-        //   }, 500);
-        // }
-        // isVisible = !isVisible;
-        ipcRenderer.send("manual-triggered");
       });
 
       //  Auto-hide when audio finishes
