@@ -75,14 +75,7 @@
 
       // Start audio and animation on button click
       playButton.addEventListener("click", () => {
-        if (!audioCtx) {
-          setupAudio();
-        }
-
-        audioCtx.resume().then(() => {
-          audio.play();
-          animateMouth();
-        });
+        ipcRenderer.send("manual-triggered");
       });
 
       // Listen for the event from main.js to start audio

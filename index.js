@@ -428,6 +428,13 @@ if (!fs.existsSync(settingsPath)) {
   };
   fs.writeFileSync(settingsPath, JSON.stringify(defaultSettings, null, 2));
 }
+
+// Listen for the event from renderer
+ipcMain.on("manual-triggered", async () => {
+  await scheduledJob();
+  hologramWindow.webContents.send("start-audio");
+});
+
 // Handle saving settings
 ipcMain.on("save-settings", (event, settings) => {
   const settingsPath = path.join(app.getPath("userData"), "settings.json");
