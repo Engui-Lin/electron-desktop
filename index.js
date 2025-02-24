@@ -284,10 +284,8 @@ const scheduledJob = async () => {
 
   // Check if current time is within range
   const isWithinFocusTime =
-    (currentHour > startHour ||
-      (currentHour === startHour && currentMinute >= startMinute)) &&
-    (currentHour < endHour ||
-      (currentHour === endHour && currentMinute <= endMinute));
+    (currentHour > startHour || currentHour === startHour) &&
+    (currentHour < endHour || currentHour === endHour);
 
   console.log(
     isWithinFocusTime ? "Currently within focus time!" : "Outside focus time."
