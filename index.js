@@ -313,6 +313,7 @@ app.whenReady().then(async () => {
     height: 600,
     resizable: false,
     show: false,
+    titleBarStyle: "hidden",
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
