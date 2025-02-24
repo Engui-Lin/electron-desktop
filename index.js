@@ -311,8 +311,11 @@ const scheduledJob = async () => {
 
 app.whenReady().then(async () => {
   mainWindow = new BrowserWindow({
-    width: 1280,
-    height: 720,
+    width: 880,
+    height: 600,
+    resizable: false,
+    show: false,
+    autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
@@ -341,7 +344,7 @@ app.whenReady().then(async () => {
 
   mainWindow.loadFile("index.html");
 
-  mainWindow.webContents.openDevTools(); // Open DevTools for debugging
+  // mainWindow.webContents.openDevTools(); // Open DevTools for debugging
 
   // Minimize to system tray instead of closing
   mainWindow.on("close", (event) => {
@@ -362,7 +365,7 @@ app.whenReady().then(async () => {
   // Create Tray Icon
   tray = new Tray(path.join(__dirname, "icon.png")); // Use a 16x16 or 32x32 icon
   const contextMenu = Menu.buildFromTemplate([
-    { label: "Show App", click: () => mainWindow.show() },
+    { label: "Settings", click: () => mainWindow.show() },
     {
       label: "Quit",
       click: () => {

@@ -9,7 +9,7 @@
  <body>
  
      <div id="main-content" class="main-content">
-         <p>Hey!</p>
+         <!-- <p>Hey!</p>
          <div class="main-body">
 
          </div>
@@ -20,19 +20,19 @@
     <button id="generateTTS">Generate TTS</button>
     <button id="playButton">Lipsync</button>
     <br>
-    <img style="width: 200px;" id="mouth" src="assets/mouth-closed.png" alt="Mouth Animation">
+    <img style="width: 200px;" id="mouth" src="assets/mouth-closed.png" alt="Mouth Animation"> -->
 
     <script src="renderer.js"></script>
-         <button onclick="openSettings()">Open Settings</button>
+         <!-- <button onclick="openSettings()">Open Settings</button>
          <script src="https://cdn.logwork.com/widget/countdown.js"></script>
-<a href="https://logwork.com/countdown-timer" class="countdown-timer" data-timezone="Europe/Zurich" data-date="2025-02-24 05:00">Countdown Timer</a>
+<a href="https://logwork.com/countdown-timer" class="countdown-timer" data-timezone="Europe/Zurich" data-date="2025-02-24 05:00">Countdown Timer</a> -->
      </div>
  
      <!-- Settings Menu -->
-     <div id="settings-container" class="container hidden">
+     <div id="settings-container" class="container">
          <div class="settings-header">
              <span>Settings</span>
-             <span onclick="closeSettings()" style="cursor: pointer;">X</span>
+             <!-- <span onclick="closeSettings()" style="cursor: pointer;">X</span> -->
          </div>
  
          <div class="tabs">
@@ -190,7 +190,7 @@
                   activeTabContent.classList.add("active");
                 }
               }
- 
+              openTab("audio")
          function openSettings() {
              document.getElementById("main-content").classList.add("hidden");
              document.getElementById("settings-container").classList.remove("hidden");
